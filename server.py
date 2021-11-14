@@ -13,12 +13,18 @@ AWESOMENESS = [
     'oh-so-not-meh', 'brilliant', 'ducky', 'coolio', 'incredible',
     'wonderful', 'smashing', 'lovely']
 
+INSULT = ["You must have been born on a highway, because that's where most accidents happen.",
+"Shut up, you'll never be the man your mother is.",
+"It looks like your face caught on fire and someone tried to put it out with a fork.",
+"Your family tree is a cactus, because everyone on it is a prick."]
 
 @app.route('/')
 def start_here():
     """Home page."""
 
-    return "<!doctype html><html>Hi! This is the home page.</html>"
+    return """<!doctype html><html>Hi! This is the home page.
+    <br>
+    Click this link to reach Hello <a href="/hello">Link</a></html>"""
 
 
 @app.route('/hello')
@@ -35,6 +41,31 @@ def say_hello():
         <h1>Hi There!</h1>
         <form action="/greet">
           What's your name? <input type="text" name="person">
+          <br><br>
+          Choose your compliment.
+          <select name="compliment">
+            <option value="awesome">Awesome</option>
+            <option value="terrific">Terrific</option>
+            <option value="fantastic">Fantastic</option>
+            <option value="neato">Neato</option>
+            <option value="fantabulous">Fantabulous</option>
+            <option value="wowza">Wowza</option>
+            <option value="oh-so-not-meh">Oh so not meh</option>
+            <option value="brilliant">Brillant</option>
+            <option value="ducky">Ducky</option>
+            <option value="coolio">Coolio</option>
+            <option value="incredible">Incredible</option>
+            <option value="wonderful">Wonderful</option>
+            <option value="smashing">Smashing</option>
+            <option value="lovely">Lovely</option>
+          </select>
+          <input type="submit" value="Submit">
+        </form>
+        <br><br>
+        <form action="/diss">
+          What's your name? <input type="text" name="person">
+          <br><br>
+          Get a diss here.
           <input type="submit" value="Submit">
         </form>
       </body>
@@ -44,11 +75,11 @@ def say_hello():
 
 @app.route('/greet')
 def greet_person():
-    """Get user by name."""
-
+    """Get user by name and compliment."""
+  
     player = request.args.get("person")
-
-    compliment = choice(AWESOMENESS)
+    
+    compliment = request.args.get("compliment")
 
     return f"""
     <!doctype html>
@@ -58,6 +89,27 @@ def greet_person():
       </head>
       <body>
         Hi, {player}! I think you're {compliment}!
+      </body>
+    </html>
+    """
+
+
+@app.route('/diss')
+def diss_person():
+    """Get user by name and diss."""
+  
+    player = request.args.get("person")
+    
+    diss = choice(INSULT)
+
+    return f"""
+    <!doctype html>
+    <html>
+      <head>
+        <title>A Diss</title>
+      </head>
+      <body>
+        Hi, {player}! {diss}
       </body>
     </html>
     """
